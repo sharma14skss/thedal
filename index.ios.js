@@ -10,14 +10,14 @@ import {Scene, Router} from 'react-native-router-flux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 import styles from './app/styles.js';
-
+import TabBar from './app/TabBar';
 
 class tempview extends Component{
   render() {
     return <ScrollableTabView
       style={{marginTop: 20, }}
       initialPage={1}
-      renderTabBar={() => <FacebookTabBar />}
+      renderTabBar={() => <TabBar />}
       >
       <ScrollView tabLabel="ios-paper" style={styles.tabView}>
         <View style={styles.card}>
