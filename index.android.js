@@ -3,7 +3,8 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  ScrollView
 } from 'react-native';
 
 import {Scene, Router} from 'react-native-router-flux';
@@ -53,7 +54,7 @@ export default class thedal extends Component {
     render() {
     return <Router>
       <Scene key="root">
-        <Scene key="tempview" component={tempview} title="tempview"/>
+        <Scene key="tempview" component={tempview} title="tempview" hideNavBar={true}/>
       </Scene>
     </Router>
   }
