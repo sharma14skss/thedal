@@ -18,34 +18,39 @@ class login extends Component {
   constructor(props){
       super(props);
       this.state = {
-        login:false,
+        login:0,
         userText:'',
         userPass:'',
+
       }
     }
   componentWillMount(){
+    
     AsyncStorage.getItem('token',(err,result)=>{
-        console.log(result);
         if(result!=null){
           Actions.home();
-        }
-      })
-  }
-  componentDidMount() {
-    if(token==null){
-      auth.onAuthStateChanged(function(user) {
+        }else{
+          this.setState({
+            login:1,
+          })
+          auth.onAuthStateChanged(function(user) {
             if (user) {
               console.log(user)
               AsyncStorage.multiSet(
                 [['token', user.uid], ['email', user.email]]
-                , cb = ()=>{
+                , sucess = ()=>{
                   Actions.home();
                 });
             } else {
-              console.log(user)
+
             }
           });
-    }
+
+        }
+      })
+  }
+  componentDidMount() {
+    
   }
 
   Login() {
@@ -64,14 +69,14 @@ class login extends Component {
   }
   Signout() {
     auth.signOut().then(function () {
-      // Sign-out successful.
+      console.log('signout')
     }, function (error) {
-      // An error happened.
+      console.log(error)
     });
   }
 
   render() {
-    return <View style={{opacity:0}}>
+    return <View style={{opacity:this.state.login}}>
     <Text>Login</Text>
     <TextInput
         onChangeText={(userText) => this.setState({userText})}

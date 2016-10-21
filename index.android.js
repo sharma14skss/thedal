@@ -21,18 +21,25 @@ const token = null;
 export default class thedal extends Component {
     constructor(props){
       super(props);
+      this.state={
+        view:0,
+      }
     }
     componentWillMount(){
       AsyncStorage.getItem('token',(err,result)=>{
-        console.log(result);
         if(result!=null){
-          Actions.home();
+          Actions.home({type: "reset"});
+        }
+        else{
+          this.setState({
+            view:1
+          })
         }
       })
     }
     render() {
       return <Router>
-        <Scene key="root">
+        <Scene key="root" styles={{opacity:this.state.view}}>
           <Scene key="login" component={login} title="login" hideNavBar={true} initial={true}/>
           <Scene key="signup" component={signup} title="signup" hideNavBar={true}/>
           <Scene key="home" component={Home} title="Home" hideNavBar={true} />
