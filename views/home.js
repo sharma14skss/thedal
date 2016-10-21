@@ -1,8 +1,20 @@
-class tempview extends Component{
+import React, { Component } from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView
+} from 'react-native';
+
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+import TabBar from './TabBar';
+import styles from './styles.js';
+class Home extends Component{
   render() {
     return <ScrollableTabView
       style={{marginTop: 20, }}
-      initialPage={1}
+      initialPage={0}
       renderTabBar={() => <TabBar />}
       >
       <ScrollView tabLabel="ios-paper" style={styles.tabView}>
@@ -33,3 +45,5 @@ class tempview extends Component{
     </ScrollableTabView>;
   }
 } 
+
+export default Home;

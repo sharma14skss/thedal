@@ -4,37 +4,53 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  TextInput,
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
 
+import { Actions } from 'react-native-router-flux';
 import { database, auth } from '../lib/firebase';
+
 
 class login extends Component {
   constructor(props){
       super(props);
       this.state = {
         login:false,
+        userText:'',
+        userPass:'',
       }
     }
+  componentWillMount(){
+
+  }
   componentDidMount() {
-    this.Login('skss.vfx@gmail.com', '968811');
+   auth.onAuthStateChanged(function(user) {
+      if (user) {
+        console.log(user)
+        Actions.home();
+      } else {
+         console.log(user)
+      }
+    });
   }
 
-  Login(username, password) {
-    auth.signInWithEmailAndPassword(username, password).catch(function (error) {
+  Login() {
+    auth.signInWithEmailAndPassword(this.state.userText, this.state.userPass).catch(function (error) {
       var errorCode = error.code;
       var errorMessage = error.message;
       console.log(errorCode + '---' + errorMessage);
     });
   }
-  signup(username, password) {
-    auth.createUserWithEmailAndPassword(username, password).catch(function (error) {
+  Signup(username, password) {
+    auth.createUserWithEmailAndPassword(this.state.userText, this.state.userPass).catch(function (error) {
       var errorCode = error.code;
       var errorMessage = error.message;
       console.log(errorCode + '---' + errorMessage);
     });
   }
-  signout() {
+  Signout() {
     auth.signOut().then(function () {
       // Sign-out successful.
     }, function (error) {
@@ -43,7 +59,27 @@ class login extends Component {
   }
 
   render() {
-    return <View><Text>login</Text></View>
+    return <View>
+    <Text>Login</Text>
+    <TextInput
+        onChangeText={(userText) => this.setState({userText})}
+        value={this.state.Text}
+        placeholder={'email'}
+        keyboardType={'email-address'}
+      />
+      <TextInput
+        onChangeText={(userPass) => this.setState({userPass})}
+        value={this.state.userPass}
+        placeholder={'password'}
+        secureTextEntry={true}
+      />
+      <TouchableOpacity onPress={this.Login.bind(this)}>
+        <Text>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={Actions.signup}>
+        <Text>Signup</Text>
+      </TouchableOpacity>
+      </View>
   }
 
 }

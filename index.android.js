@@ -8,12 +8,12 @@ import {
 } from 'react-native';
 
 import {Scene, Router} from 'react-native-router-flux';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+
 
 import styles from './views/styles.js';
-import TabBar from './views/TabBar';
 import login from './views/login';
-
+import signup from './views/signup';
+import Home from './views/home';
 
 
 export default class thedal extends Component {
@@ -24,7 +24,9 @@ export default class thedal extends Component {
     render() {
       return <Router>
         <Scene key="root">
-          <Scene key="login" component={login} title="login" hideNavBar={true}/>
+          <Scene key="login" component={login} title="login" hideNavBar={true} initial={true}/>
+          <Scene key="signup" component={signup} title="signup" hideNavBar={true}/>
+          <Scene key="home" component={Home} title="Home" hideNavBar={true} />
         </Scene>
       </Router>
   }
