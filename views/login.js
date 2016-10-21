@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  AsyncStorage,
   StyleSheet,
   Text,
   View,
@@ -11,7 +12,7 @@ import {
 
 import { Actions } from 'react-native-router-flux';
 import { database, auth } from '../lib/firebase';
-
+const token = null;
 
 class login extends Component {
   constructor(props){
@@ -23,17 +24,28 @@ class login extends Component {
       }
     }
   componentWillMount(){
-
+    AsyncStorage.getItem('token',(err,result)=>{
+        console.log(result);
+        if(result!=null){
+          Actions.home();
+        }
+      })
   }
   componentDidMount() {
-   auth.onAuthStateChanged(function(user) {
-      if (user) {
-        console.log(user)
-        Actions.home();
-      } else {
-         console.log(user)
-      }
-    });
+    if(token==null){
+      auth.onAuthStateChanged(function(user) {
+            if (user) {
+              console.log(user)
+              AsyncStorage.multiSet(
+                [['token', user.uid], ['email', user.email]]
+                , cb = ()=>{
+                  Actions.home();
+                });
+            } else {
+              console.log(user)
+            }
+          });
+    }
   }
 
   Login() {
@@ -59,7 +71,7 @@ class login extends Component {
   }
 
   render() {
-    return <View>
+    return <View style={{opacity:0}}>
     <Text>Login</Text>
     <TextInput
         onChangeText={(userText) => this.setState({userText})}
