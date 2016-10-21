@@ -10,53 +10,23 @@ import {
 import {Scene, Router} from 'react-native-router-flux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-import styles from './app/styles.js';
-import TabBar from './app/TabBar';
+import styles from './views/styles.js';
+import TabBar from './views/TabBar';
+import login from './views/login';
 
-class tempview extends Component{
-  render() {
-    return <ScrollableTabView
-      style={{marginTop: 20, }}
-      initialPage={1}
-      renderTabBar={() => <TabBar />}
-      >
-      <ScrollView tabLabel="ios-paper" style={styles.tabView}>
-        <View style={styles.card}>
-          <Text>News</Text>
-        </View>
-      </ScrollView>
-      <ScrollView tabLabel="ios-people" style={styles.tabView}>
-        <View style={styles.card}>
-          <Text>Friends</Text>
-        </View>
-      </ScrollView>
-      <ScrollView tabLabel="ios-chatboxes" style={styles.tabView}>
-        <View style={styles.card}>
-          <Text>Messenger</Text>
-        </View>
-      </ScrollView>
-      <ScrollView tabLabel="ios-notifications" style={styles.tabView}>
-        <View style={styles.card}>
-          <Text>Notifications</Text>
-        </View>
-      </ScrollView>
-      <ScrollView tabLabel="ios-list" style={styles.tabView}>
-        <View style={styles.card}>
-          <Text>Other nav</Text>
-        </View>
-      </ScrollView>
-    </ScrollableTabView>;
-  }
-} 
 
 
 export default class thedal extends Component {
+    constructor(props){
+      super(props);
+    }
+
     render() {
-    return <Router>
-      <Scene key="root">
-        <Scene key="tempview" component={tempview} title="tempview" hideNavBar={true}/>
-      </Scene>
-    </Router>
+      return <Router>
+        <Scene key="root">
+          <Scene key="login" component={login} title="login" hideNavBar={true}/>
+        </Scene>
+      </Router>
   }
 };
 
