@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  TouchableHighlight,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -42,14 +42,14 @@ const TabBar = React.createClass({
   render() {
     return <View style={[styles.tabs, this.props.style, ]}>
       {this.props.tabs.map((tab, i) => {
-        return <TouchableOpacity key={tab} onPress={() => this.props.goToPage(i)} style={styles.tab}>
+        return <TouchableHighlight underlayColor='transparent'  key={tab} onPress={() => this.props.goToPage(i)} style={styles.tab}>
           <Icon
             name={tab}
             size={30}
             color={this.props.activeTab === i ? 'rgb(59,89,152)' : 'rgb(204,204,204)'}
             ref={(icon) => { this.tabIcons[i] = icon; }}
           />
-        </TouchableOpacity>;
+        </TouchableHighlight>;
       })}
     </View>;
   },

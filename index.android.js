@@ -10,6 +10,7 @@ import {
 
 import {Scene, Router,Actions} from 'react-native-router-flux';
 
+import {database, auth} from './lib/firebase';
 
 import styles from './views/styles.js';
 import login from './views/login';
@@ -25,17 +26,20 @@ export default class thedal extends Component {
         view:0,
       }
     }
-    componentWillMount(){
-      AsyncStorage.getItem('token',(err,result)=>{
-        if(result!=null){
-          Actions.home({type: "reset"});
-        }
-        else{
-          this.setState({
-            view:1
+    componentDidMount(){
+      let self = this;
+      auth
+      .onAuthStateChanged(function (user) {
+        if (user) {
+          console.log(user)
+           Actions.home({type: "reset"});
+        } else {
+           self.setState({
+            view:1,
           })
+          Actions.login({type: "reset"});
         }
-      })
+      });
     }
     render() {
       return <Router>

@@ -4,10 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { Container, Content, Button } from 'native-base';
 import TabBar from './TabBar';
 import styles from './styles.js';
 class Home extends Component{
@@ -20,6 +22,7 @@ class Home extends Component{
       <ScrollView tabLabel="ios-paper" style={styles.tabView}>
         <View style={styles.card}>
           <Text>News</Text>
+           <Button> Click Me! </Button>
         </View>
       </ScrollView>
       <ScrollView tabLabel="ios-people" style={styles.tabView}>
