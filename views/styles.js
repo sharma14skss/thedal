@@ -3,23 +3,46 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-  tabView: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: 'rgba(0,0,0,0.01)',
+  loginContainer:{
+    flex:1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor:'#2d324f',
   },
-  card: {
-    borderWidth: 1,
-    backgroundColor: '#fff',
-    borderColor: 'rgba(0,0,0,0.1)',
-    margin: 5,
-    height: 150,
-    padding: 15,
-    shadowColor: '#ccc',
-    shadowOffset: { width: 2, height: 2, },
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
+  loginHeading:{
+    color:'#fff',
+    marginBottom:20,
+    fontSize:25,
   },
+  loginInput:{
+    width:350,
+    height:40,
+    alignItems: 'center',
+    backgroundColor:'#fff'
+  },
+  loginIconColor:{
+    color:'#4C4C4C',
+    paddingLeft:5
+  },
+  loginButton:{
+    width:350,
+    alignSelf: 'auto',
+    marginTop:10,
+    backgroundColor:'#f15243',
+  },
+  colorWhite:{
+    color:'#fff'
+  },
+  marTop20:{
+    marginTop:20,
+  },
+  colorOrg:{
+    color:'#f15243'
+  },
+  font20:{
+    fontSize:18
+  }
 });
 
 

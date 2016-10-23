@@ -11,8 +11,17 @@ import {
 } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
+import {
+  Container,
+  Content,
+  InputGroup,
+  Input,
+  Icon,
+  Button
+} from 'native-base';
 import {database, auth} from '../lib/firebase';
-const token = null;
+
+import styles from './styles';
 
 class login extends Component {
   constructor(props) {
@@ -24,19 +33,24 @@ class login extends Component {
     }
   }
   componentWillMount() {
+    // this.Signout();
     let self = this;
-    auth
-      .onAuthStateChanged(function (user) {
-        if (user) {
-          console.log(user)
-           Actions.home({type: "reset"});
-        } else {
-           self.setState({
-            login:1,
-          })
-        }
-      });
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        console.log(user)
+        self.saveUser(user)
+        Actions.home({type: "reset"});
+      } else {
+        self.setState({login: 1})
+      }
+    });
 
+  }
+
+  saveUser(user) {
+    database
+      .ref('user/' + user.uid)
+      .set({username: user.email, uid: user.uid, name: user.displayName, photoUrl: user.photoURL, verified: user.emailVerified})
   }
 
   Login() {
@@ -49,12 +63,14 @@ class login extends Component {
       });
   }
   Signup(username, password) {
+    let self = this;
     auth
       .createUserWithEmailAndPassword(this.state.userText, this.state.userPass)
       .catch(function (error) {
         var errorCode = error.code;
         var errorMessage = error.message;
         console.log(errorCode + '---' + errorMessage);
+
       });
   }
   Signout() {
@@ -65,35 +81,60 @@ class login extends Component {
         console.log('signout')
         self.setState({login: 1})
         Actions.login();
-        
+
       }, function (error) {
         console.log(error)
       });
   }
+  forgotPassword(email){
+    auth.sendPasswordResetEmail(email).then(function() {
+      alert('E-mail send')
+    }, function(error) {
+      alert(error)
+    });
+
+  }
 
   render() {
-    return <View style={{
-      opacity: this.state.login
-    }}>
-      <Text>Login</Text>
-      <TextInput
-        onChangeText={(userText) => this.setState({userText})}
-        value={this.state.Text}
-        placeholder={'email'}
-        keyboardType={'email-address'}/>
-      <TextInput
-        onChangeText={(userPass) => this.setState({userPass})}
-        value={this.state.userPass}
-        placeholder={'password'}
-        secureTextEntry={true}/>
-      <TouchableOpacity onPress={this
+    return <View
+      style={[
+      {
+        opacity: this.state.login
+      },
+      styles.loginContainer
+    ]}>
+      <Text style={styles.loginHeading}>Sign in</Text>
+
+      <InputGroup style={styles.loginInput}>
+        <Icon name='ios-mail-outline' style={styles.loginIconColor}/>
+        <Input
+          onChangeText={(userText) => this.setState({userText})}
+          value={this.state.Text}
+          placeholder={'E-mail'}
+          keyboardType={'email-address'}/>
+      </InputGroup>
+      <InputGroup style={styles.loginInput}>
+        <Icon name='ios-lock-outline' style={styles.loginIconColor}/>
+        <Input
+          onChangeText={(userPass) => this.setState({userPass})}
+          value={this.state.userPass}
+          placeholder={'Password'}
+          secureTextEntry={true}/>
+      </InputGroup>
+      <Button style={styles.loginButton} onPress={this
         .Login
-        .bind(this)}>
-        <Text>Login</Text>
+        .bind(this)}>Sign in</Button>
+      
+      
+      <TouchableOpacity style={styles.marTop20} onPress={this.forgotPassword.bind(this,this.state.userText)}>
+        <Text style={styles.colorWhite}>Forgot Passowrd?</Text>
       </TouchableOpacity>
+      <View style={{flex:0,flexDirection: 'row',marginTop:10}}>
+      <Text style={[styles.colorWhite,styles.font20]}>Don't have an account?</Text>
       <TouchableOpacity onPress={Actions.signup}>
-        <Text>Signup</Text>
+        <Text style={[styles.colorOrg,styles.font20]} > Sign up</Text>
       </TouchableOpacity>
+      </View>
     </View>
   }
 
