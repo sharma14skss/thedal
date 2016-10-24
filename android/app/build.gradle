@@ -87,7 +87,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.thedal"
+        applicationId "com.thedal.thedal"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
@@ -138,3 +138,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
   from configurations.compile
   into 'libs'
 }
+apply plugin: 'com.google.gms.google-services'

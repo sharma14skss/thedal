@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   AppRegistry,
   AsyncStorage,
@@ -10,7 +10,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import {
   Container,
   Content,
@@ -19,7 +19,7 @@ import {
   Icon,
   Button
 } from 'native-base';
-import {database, auth} from '../lib/firebase';
+import { database, auth } from '../lib/firebase';
 
 import styles from './styles';
 
@@ -37,20 +37,24 @@ class login extends Component {
     let self = this;
     auth.onAuthStateChanged(function (user) {
       if (user) {
-        console.log(user)
-        self.saveUser(user)
-        Actions.home({type: "reset"});
+        console.log(user);
+        self.saveUser(user);
+        Actions.home({ type: "reset" });
       } else {
-        self.setState({login: 1})
+        self.setState({ login: 1 })
       }
     });
 
   }
+  validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  };
 
   saveUser(user) {
     database
-      .ref('user/' + user.uid)
-      .set({username: user.email, uid: user.uid, name: user.displayName, photoUrl: user.photoURL, verified: user.emailVerified})
+      .ref('users/' + user.uid)
+      .set({ username: user.email, uid: user.uid, name: user.displayName, photoUrl: user.photoURL, verified: user.emailVerified })
   }
 
   Login() {
@@ -79,17 +83,17 @@ class login extends Component {
       .signOut()
       .then(function () {
         console.log('signout')
-        self.setState({login: 1})
+        self.setState({ login: 1 })
         Actions.login();
 
       }, function (error) {
         console.log(error)
       });
   }
-  forgotPassword(email){
-    auth.sendPasswordResetEmail(email).then(function() {
+  forgotPassword(email) {
+    auth.sendPasswordResetEmail(email).then(function () {
       alert('E-mail send')
-    }, function(error) {
+    }, function (error) {
       alert(error)
     });
 
@@ -98,42 +102,42 @@ class login extends Component {
   render() {
     return <View
       style={[
-      {
-        opacity: this.state.login
-      },
-      styles.loginContainer
-    ]}>
+        {
+          opacity: this.state.login
+        },
+        styles.loginContainer
+      ]}>
       <Text style={styles.loginHeading}>Sign in</Text>
 
       <InputGroup style={styles.loginInput}>
-        <Icon name='ios-mail-outline' style={styles.loginIconColor}/>
+        <Icon name='ios-mail-outline' style={styles.loginIconColor} />
         <Input
-          onChangeText={(userText) => this.setState({userText})}
+          onChangeText={(userText) => this.setState({ userText })}
           value={this.state.Text}
           placeholder={'E-mail'}
-          keyboardType={'email-address'}/>
+          keyboardType={'email-address'} />
       </InputGroup>
       <InputGroup style={styles.loginInput}>
-        <Icon name='ios-lock-outline' style={styles.loginIconColor}/>
+        <Icon name='ios-lock-outline' style={styles.loginIconColor} />
         <Input
-          onChangeText={(userPass) => this.setState({userPass})}
+          onChangeText={(userPass) => this.setState({ userPass })}
           value={this.state.userPass}
           placeholder={'Password'}
-          secureTextEntry={true}/>
+          secureTextEntry={true} />
       </InputGroup>
       <Button style={styles.loginButton} onPress={this
         .Login
         .bind(this)}>Sign in</Button>
-      
-      
-      <TouchableOpacity style={styles.marTop20} onPress={this.forgotPassword.bind(this,this.state.userText)}>
+
+
+      <TouchableOpacity style={styles.marTop20} onPress={this.forgotPassword.bind(this, this.state.userText)}>
         <Text style={styles.colorWhite}>Forgot Passowrd?</Text>
       </TouchableOpacity>
-      <View style={{flex:0,flexDirection: 'row',marginTop:10}}>
-      <Text style={[styles.colorWhite,styles.font20]}>Don't have an account?</Text>
-      <TouchableOpacity onPress={Actions.signup}>
-        <Text style={[styles.colorOrg,styles.font20]} > Sign up</Text>
-      </TouchableOpacity>
+      <View style={{ flex: 0, flexDirection: 'row', marginTop: 10 }}>
+        <Text style={[styles.colorWhite, styles.font20]}>Don't have an account?</Text>
+        <TouchableOpacity onPress={Actions.signup}>
+          <Text style={[styles.colorOrg, styles.font20]} > Sign up</Text>
+        </TouchableOpacity>
       </View>
     </View>
   }

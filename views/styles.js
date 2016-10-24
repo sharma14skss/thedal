@@ -13,10 +13,10 @@ const styles = StyleSheet.create({
   loginHeading:{
     color:'#fff',
     marginBottom:20,
-    fontSize:25,
+    fontSize:20,
   },
   loginInput:{
-    width:350,
+    width:300,
     height:40,
     alignItems: 'center',
     backgroundColor:'#fff'
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     paddingLeft:5
   },
   loginButton:{
-    width:350,
+    width:300,
     alignSelf: 'auto',
     marginTop:10,
     backgroundColor:'#f15243',
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     color:'#f15243'
   },
   font20:{
-    fontSize:18
+    fontSize:15
   }
 });
 

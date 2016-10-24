@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   AppRegistry,
   AsyncStorage,
@@ -8,9 +8,9 @@ import {
   ScrollView
 } from 'react-native';
 
-import {Scene, Router, Actions} from 'react-native-router-flux';
+import { Scene, Router, Actions } from 'react-native-router-flux';
 
-import {database, auth} from './lib/firebase';
+import { database, auth } from './lib/firebase';
 
 import styles from './views/styles.js';
 import login from './views/login';
@@ -30,26 +30,30 @@ export default class thedal extends Component {
     let self = this;
     auth.onAuthStateChanged(function (user) {
       if (user) {
-        Actions.home({type: "reset"});
+        Actions.home({ type: "reset" });
       } else {
-        self.setState({view: 1})
-        Actions.login({type: "reset"});
+        self.setState({ view: 1 })
+        Actions.login({ type: "reset" });
       }
     });
   }
   render() {
-    return <Router>
+    return <Router sceneStyle={{
+      backgroundColor: '#2d324f',
+    }}
+    >
       <Scene key="root" styles={{
-        opacity: this.state.view
+        opacity: this.state.view,
+        backgroundColor: '#2d324f',
       }}>
         <Scene
           key="login"
           component={login}
           title="login"
           hideNavBar={true}
-          initial={true}/>
-        <Scene key="signup" component={signup} title="signup" hideNavBar={true}/>
-        <Scene key="home" component={Home} title="Home" hideNavBar={true}/>
+          initial={true} />
+        <Scene key="signup" component={signup} title="signup" hideNavBar={true} />
+        <Scene key="home" component={Home} title="Home" hideNavBar={true} />
       </Scene>
     </Router>
   }

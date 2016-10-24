@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "829827422734",
+    "firebase_url": "https://thedal-3312a.firebaseio.com",
+    "project_id": "thedal-3312a",
+    "storage_bucket": "thedal-3312a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829827422734:android:1dc6f81399154737",
+        "android_client_info": {
+          "package_name": "com.thedal.thedal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829827422734-41jeo1t7ss09nf8tsfjdukdakjpmequo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNU1dcov9yjDVw-KEesKx9uivhu7oZ6sU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
