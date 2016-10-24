@@ -15,7 +15,8 @@ import {
   InputGroup,
   Input,
   Icon,
-  Button
+  Button,
+  Spinner
 } from 'native-base';
 import * as Animatable from 'react-native-animatable';
 import authController from './authController';
@@ -28,7 +29,6 @@ class signup extends authController {
   render() {
     return <View
       style={[
-
         styles.loginContainer
       ]}>
       <Text style={styles.loginHeading}>Sign up</Text>
@@ -55,7 +55,8 @@ class signup extends authController {
       </Animatable.View>
       <Button style={styles.loginButton} onPress={this
         .Signup
-        .bind(this)}>Sign up</Button>
+        .bind(this)} disabled={this.state.btn}>Sign up</Button>
+        <Spinner size={'small'} style={{ opacity: this.state.spinnerOp }} color='#fff' />
       <View style={{ flex: 0, flexDirection: 'row', marginTop: 10 }}>
         <Text style={[styles.colorWhite, styles.font20]}>Already have an account?</Text>
         <TouchableOpacity onPress={this.gotoLogin.bind(this)}>

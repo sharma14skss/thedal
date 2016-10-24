@@ -34,6 +34,8 @@ class authController extends Component {
       userPass: '',
       emailPlace: 'E-mail',
       passPlace: 'Password',
+      spinnerOp: 0,
+      btn: false,
     }
   }
   componentDidMount() {
@@ -82,14 +84,23 @@ class authController extends Component {
   }
 
   Login() {
+    let self = this;
     let email = this.state.userText;
     let pass = this.state.userPass;
     let check = this.validateBox(email, pass);
     console.log(check);
     if (check) {
+      this.setState({
+        spinnerOp: 1,
+        btn: !this.state.btn,
+      });
       auth
         .signInWithEmailAndPassword(email, pass)
         .catch(function (error) {
+          self.setState({
+            spinnerOp: 0,
+            btn: !self.state.btn,
+          });
           var errorCode = error.code;
           var errorMessage = error.message;
           if (errorCode == "auth/wrong-password") {
@@ -102,6 +113,7 @@ class authController extends Component {
             alert("This Email not registered")
           }
           console.log(errorCode + '---' + errorMessage);
+
         });
     }
   }
@@ -111,9 +123,17 @@ class authController extends Component {
     let pass = this.state.userPass;
     let check = this.validateBox(email, pass);
     if (check) {
+      this.setState({
+        spinnerOp: 1,
+        btn: !this.state.btn,
+      });
       auth
         .createUserWithEmailAndPassword(email, pass)
         .catch(function (error) {
+          self.setState({
+            spinnerOp: 0,
+            btn: !self.state.btn,
+          });
           var errorCode = error.code;
           var errorMessage = error.message;
           console.log(errorCode + '---' + errorMessage);
@@ -186,10 +206,10 @@ class authController extends Component {
             secureTextEntry={true} />
         </InputGroup>
       </Animatable.View>
-      <Button style={styles.loginButton} onPress={this
+      <Button style={[styles.loginButton]} onPress={this
         .Login
-        .bind(this)}><Spinner size={'small'} color='#fff'/> Sign in</Button>
-         
+        .bind(this)} disabled={this.state.btn}>Sign in</Button>
+      <Spinner size={'small'} style={{ opacity: this.state.spinnerOp }} color='#fff' />
 
       <TouchableOpacity style={styles.marTop20} onPress={this.forgotPassword.bind(this, this.state.userText)}>
         <Text style={styles.colorWhite}>Forgot Passowrd?</Text>
