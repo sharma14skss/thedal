@@ -1,63 +1,58 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  AsyncStorage,
   StyleSheet,
   Text,
-  View
+  View,
+  ScrollView
 } from 'react-native';
 
-import {Scene, Router} from 'react-native-router-flux';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { Scene, Router, Actions } from 'react-native-router-flux';
 
-import styles from './app/styles.js';
-import TabBar from './app/TabBar';
+import { database, auth } from './lib/firebase';
 
-class tempview extends Component{
-  render() {
-    return <ScrollableTabView
-      style={{marginTop: 20, }}
-      initialPage={1}
-      renderTabBar={() => <TabBar />}
-      >
-      <ScrollView tabLabel="ios-paper" style={styles.tabView}>
-        <View style={styles.card}>
-          <Text>News</Text>
-        </View>
-      </ScrollView>
-      <ScrollView tabLabel="ios-people" style={styles.tabView}>
-        <View style={styles.card}>
-          <Text>Friends</Text>
-        </View>
-      </ScrollView>
-      <ScrollView tabLabel="ios-chatboxes" style={styles.tabView}>
-        <View style={styles.card}>
-          <Text>Messenger</Text>
-        </View>
-      </ScrollView>
-      <ScrollView tabLabel="ios-notifications" style={styles.tabView}>
-        <View style={styles.card}>
-          <Text>Notifications</Text>
-        </View>
-      </ScrollView>
-      <ScrollView tabLabel="ios-list" style={styles.tabView}>
-        <View style={styles.card}>
-          <Text>Other nav</Text>
-        </View>
-      </ScrollView>
-    </ScrollableTabView>;
-  }
-} 
+import styles from './views/styles.js';
+import authController from './views/authController';
+import signup from './views/signup';
+import Home from './views/home';
 
+const token = null;
 
 export default class thedal extends Component {
-    render() {
-    return <Router>
-      <Scene key="root">
-        <Scene key="tempview" component={tempview} title="tempview"/>
+  constructor(props) {
+    super(props);
+    this.state = {
+      view: 0
+    }
+  }
+  componentDidMount() {
+    let self = this;
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        Actions.home({ type: "reset" });
+      } else {
+        self.setState({ view: 1 })
+        Actions.authController({ type: "reset" });
+      }
+    });
+  }
+  render() {
+    return <Router >
+      <Scene key="root" styles={{
+        opacity: this.state.view,
+      }}>
+        <Scene
+          key="authController"
+          component={authController}
+          title="authController"
+          hideNavBar={true}
+          initial={true} />
+        <Scene key="signup" component={signup} title="signup" hideNavBar={true} />
+        <Scene key="home" component={Home} title="Home" hideNavBar={true} />
       </Scene>
     </Router>
   }
 };
-
 
 AppRegistry.registerComponent('thedal', () => thedal);

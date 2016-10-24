@@ -11,7 +11,16 @@ import {
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { Container, Content, Card, CardItem, Thumbnail, Text, Button } from 'native-base';
 import TabBar from './TabBar';
+import authController from './authController';
 import styles from './styles.js';
+
+class Signout extends authController {
+  render(){
+    return <Button style={{alignSelf: 'auto',width:200}} onPress={this.Signout.bind(this)}>sign out</Button>
+
+  }
+}
+
 class Home extends Component{
   render() {
     return <ScrollableTabView
@@ -71,7 +80,7 @@ class Home extends Component{
       </ScrollView>
       <ScrollView tabLabel="ios-list" style={styles.tabView}>
         <View style={styles.card}>
-          <Text>Other nav</Text>
+          <Signout/>
         </View>
       </ScrollView>
     </ScrollableTabView>;
