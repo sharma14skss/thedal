@@ -22,7 +22,7 @@ import {
 } from 'native-base';
 import * as Animatable from 'react-native-animatable';
 import { database, auth } from '../lib/firebase';
-import { saveUser } from './db';
+import { saveUser,updateUser } from './db';
 
 import styles from './styles';
 
@@ -58,6 +58,7 @@ class authController extends Component {
         AsyncStorage.getItem('isProfile', (err, res) => {
           console.log(res);
           if (res == 'Y') {
+            updateUser(user);
             Actions.home({ type: "reset" });
           } else {
             saveUser(user);

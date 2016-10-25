@@ -16,7 +16,7 @@ import styles from './styles.js';
 
 class Signout extends authController {
   render(){
-    return <Button style={{alignSelf: 'auto',width:200}} onPress={this.Signout.bind(this)}>sign out</Button>
+    return <Button style={{alignSelf: 'auto'}} onPress={this.Signout.bind(this)}>sign out</Button>
 
   }
 }
