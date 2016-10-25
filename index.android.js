@@ -19,28 +19,10 @@ import ProfileCreate from './views/profile';
 
 
 export default class thedal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      view: 0
-    }
-  }
-  componentDidMount() {
-   /* let self = this;
-    auth.onAuthStateChanged(function (user) {
-      if (user) {
-        Actions.home({ type: "reset" });
-      } else {
-        self.setState({ view: 1 })
-        Actions.authController({ type: "reset" });
-      }
-    });*/
-  }
+
   render() {
     return <Router >
-      <Scene key="root" styles={{
-        opacity: this.state.view,
-      }}>
+      <Scene key="root">
         <Scene
           key="authController"
           component={authController}

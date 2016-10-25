@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   AppRegistry,
   AsyncStorage,
@@ -10,7 +10,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import {
   Container,
   Content,
@@ -21,7 +21,8 @@ import {
   Spinner
 } from 'native-base';
 import * as Animatable from 'react-native-animatable';
-import {database, auth} from '../lib/firebase';
+import { database, auth } from '../lib/firebase';
+import { saveUser } from './db';
 
 import styles from './styles';
 
@@ -35,45 +36,38 @@ class authController extends Component {
       emailPlace: 'E-mail',
       passPlace: 'Password',
       spinnerOp: 0,
-      btn: false
+      btn: false,
     }
   }
   componentDidMount() {
     let self = this;
     auth.onAuthStateChanged(function (user) {
+      AsyncStorage.getItem('UserId', (err, res) => {
+        console.log(res);
+        if (res) {
+          let userRef = database.ref('users/' + res);
+          userRef.on('value', (snap) => {
+            if (snap.val()) {
+              AsyncStorage.setItem('isProfile', snap.val().isProfile);
+            }
+          });
+        }
+      });
       if (user) {
-        self.saveUser(user);
         console.log(user);
+        AsyncStorage.getItem('isProfile', (err, res) => {
+          console.log(res);
+          if (res == 'Y') {
+            Actions.home({ type: "reset" });
+          } else {
+            saveUser(user);
+            Actions.ProfileCreate({ type: "reset" })
+          }
+        });
+
       } else {
-        self.setState({login: 1})
+        self.setState({ login: 1 })
       }
-    });
-
-  }
-
-  saveUser(user) {
-    let userRef = database.ref('users/' + user.uid);
-    let data = {};
-    userRef.on('value', (snap) => {
-      data = {};
-      snap.forEach((child) => {
-        let key = child.key;
-        data[key] = child.val();
-      })
-      if (!data.isProfile) {
-        userRef.set({
-          username: user.email,
-          uid: user.uid,
-          name: user.displayName,
-          photoUrl: user.photoURL,
-          verified: user.emailVerified,
-          isProfile: false
-        })
-        Actions.ProfileCreate({type: "reset"})
-      } else {
-        Actions.home({type: "reset"});
-      }
-
     });
 
   }
@@ -86,14 +80,14 @@ class authController extends Component {
 
   validateBox(email, pass) {
     if (!this.validateEmail(email)) {
-      this.setState({emailPlace: 'Enter the valid Email'})
+      this.setState({ emailPlace: 'Enter the valid Email' })
       this
         .refs
         .email
         .shake(400);
       return false;
     } else if (pass == "") {
-      this.setState({passPlace: 'Enter the password'})
+      this.setState({ passPlace: 'Enter the password' })
       this
         .refs
         .pass
@@ -103,7 +97,6 @@ class authController extends Component {
       return true;
     }
   }
-
   Login() {
     let self = this;
     let email = this.state.userText;
@@ -124,18 +117,29 @@ class authController extends Component {
           });
           var errorCode = error.code;
           var errorMessage = error.message;
-          if (errorCode == "auth/wrong-password") {
-            alert('Invalid Passowrd');
-          }
-          if (errorCode == "auth/invalid-email") {
-            alert("Invalid Email Address")
-          }
-          if (errorCode == "auth/user-not-found") {
-            alert("This Email not registered")
-          }
           console.log(errorCode + '---' + errorMessage);
-
+          self.errorMsg(errorCode);
         });
+    }
+  }
+  errorMsg(errorCode) {
+    if (errorCode == "auth/wrong-password") {
+      alert('Invalid Passowrd');
+    }
+    else if (errorCode == "auth/invalid-email") {
+      alert("Invalid Email Address")
+    }
+    else if (errorCode == "auth/user-not-found") {
+      alert("This Email not registered")
+    }
+    else if (errorCode == "auth/email-already-in-use") {
+      alert("This Email already in use");
+    }
+    else if (errorCode == "auth/network-request-failed") {
+      alert("Network Error")
+    }
+    else {
+      alert('Error')
     }
   }
   Signup() {
@@ -158,19 +162,7 @@ class authController extends Component {
           var errorCode = error.code;
           var errorMessage = error.message;
           console.log(errorCode + '---' + errorMessage);
-          if (errorCode == "auth/wrong-password") {
-            alert('Invalid Passowrd');
-          }
-          if (errorCode == "auth/invalid-email") {
-            alert("Invalid Email Address")
-          }
-          if (errorCode == "auth/user-not-found") {
-            alert("This Email not registered")
-          }
-          if (errorCode == "auth/email-already-in-use") {
-            alert("This Email already in use");
-          }
-
+          self.errorMsg(errorCode);
         });
     }
 
@@ -181,8 +173,7 @@ class authController extends Component {
       .signOut()
       .then(function () {
         console.log('signout');
-        Actions.authController({type: "reset"});
-
+        Actions.authController({ type: "reset" });
       }, function (error) {
         console.log(error)
       });
@@ -203,58 +194,58 @@ class authController extends Component {
   render() {
     return <View
       style={[
-      {
-        opacity: this.state.login
-      },
-      styles.loginContainer
-    ]}>
+        {
+          opacity: this.state.login
+        },
+        styles.loginContainer
+      ]}>
       <Text style={styles.loginHeading}>Sign in</Text>
       <Animatable.View ref="email">
         <InputGroup style={styles.loginInput}>
-          <Icon name='ios-mail-outline' style={styles.loginIconColor}/>
+          <Icon name='ios-mail-outline' style={styles.loginIconColor} />
           <Input
-            onChangeText={(userText) => this.setState({userText})}
+            onChangeText={(userText) => this.setState({ userText })}
             value={this.state.Text}
             placeholder={this.state.emailPlace}
-            keyboardType={'email-address'}/>
+            keyboardType={'email-address'} />
         </InputGroup>
       </Animatable.View>
       <Animatable.View ref="pass">
         <InputGroup style={styles.loginInput}>
-          <Icon name='ios-lock-outline' style={styles.loginIconColor}/>
+          <Icon name='ios-lock-outline' style={styles.loginIconColor} />
           <Input
-            onChangeText={(userPass) => this.setState({userPass})}
+            onChangeText={(userPass) => this.setState({ userPass })}
             value={this.state.userPass}
             placeholder={this.state.passPlace}
-            secureTextEntry={true}/>
+            secureTextEntry={true} />
         </InputGroup>
       </Animatable.View>
       <Button
         style={[styles.loginButton]}
         onPress={this
-        .Login
-        .bind(this)}
+          .Login
+          .bind(this)}
         disabled={this.state.btn}>Sign in</Button>
       <Spinner
         size={'small'}
         style={{
-        opacity: this.state.spinnerOp
-      }}
-        color='#fff'/>
+          opacity: this.state.spinnerOp
+        }}
+        color='#fff' />
 
       <TouchableOpacity
         style={styles.marTop20}
         onPress={this
-        .forgotPassword
-        .bind(this, this.state.userText)}>
+          .forgotPassword
+          .bind(this, this.state.userText)}>
         <Text style={styles.colorWhite}>Forgot Passowrd?</Text>
       </TouchableOpacity>
       <View
         style={{
-        flex: 0,
-        flexDirection: 'row',
-        marginTop: 10
-      }}>
+          flex: 0,
+          flexDirection: 'row',
+          marginTop: 10
+        }}>
         <Text style={[styles.colorWhite, styles.font20]}>Don't have an account?</Text>
         <TouchableOpacity onPress={Actions.signup}>
           <Text style={[styles.colorOrg, styles.font20]}>

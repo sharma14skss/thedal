@@ -43,6 +43,7 @@ class signup extends authController {
             keyboardType={'email-address'} />
         </InputGroup>
       </Animatable.View>
+
       <Animatable.View ref="pass">
         <InputGroup style={styles.loginInput}>
           <Icon name='ios-lock-outline' style={styles.loginIconColor} />
@@ -53,10 +54,13 @@ class signup extends authController {
             secureTextEntry={true} />
         </InputGroup>
       </Animatable.View>
+
       <Button style={styles.loginButton} onPress={this
         .Signup
         .bind(this)} disabled={this.state.btn}>Sign up</Button>
-        <Spinner size={'small'} style={{ opacity: this.state.spinnerOp }} color='#fff' />
+
+       <Spinner size={'small'} style={{ opacity: this.state.spinnerOp }} color='#fff' />
+       
       <View style={{ flex: 0, flexDirection: 'row', marginTop: 10 }}>
         <Text style={[styles.colorWhite, styles.font20]}>Already have an account?</Text>
         <TouchableOpacity onPress={this.gotoLogin.bind(this)}>
