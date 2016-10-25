@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   AppRegistry,
   AsyncStorage,
@@ -10,7 +10,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import { Actions } from 'react-native-router-flux';
+import {Actions} from 'react-native-router-flux';
 import {
   Container,
   Content,
@@ -21,7 +21,7 @@ import {
   Spinner
 } from 'native-base';
 import * as Animatable from 'react-native-animatable';
-import { database, auth } from '../lib/firebase';
+import {database, auth} from '../lib/firebase';
 
 import styles from './styles';
 
@@ -35,27 +35,47 @@ class authController extends Component {
       emailPlace: 'E-mail',
       passPlace: 'Password',
       spinnerOp: 0,
-      btn: false,
+      btn: false
     }
   }
   componentDidMount() {
     let self = this;
     auth.onAuthStateChanged(function (user) {
       if (user) {
-        console.log(user);
         self.saveUser(user);
-        Actions.home({ type: "reset" });
+        console.log(user);
       } else {
-        self.setState({ login: 1 })
+        self.setState({login: 1})
       }
     });
 
   }
 
   saveUser(user) {
-    database
-      .ref('users/' + user.uid)
-      .set({ username: user.email, uid: user.uid, name: user.displayName, photoUrl: user.photoURL, verified: user.emailVerified })
+    let userRef = database.ref('users/' + user.uid);
+    let data = {};
+    userRef.on('value', (snap) => {
+      data = {};
+      snap.forEach((child) => {
+        let key = child.key;
+        data[key] = child.val();
+      })
+      if (!data.isProfile) {
+        userRef.set({
+          username: user.email,
+          uid: user.uid,
+          name: user.displayName,
+          photoUrl: user.photoURL,
+          verified: user.emailVerified,
+          isProfile: false
+        })
+        Actions.ProfileCreate({type: "reset"})
+      } else {
+        Actions.home({type: "reset"});
+      }
+
+    });
+
   }
 
   //validate input boxes
@@ -66,17 +86,18 @@ class authController extends Component {
 
   validateBox(email, pass) {
     if (!this.validateEmail(email)) {
-      this.setState({
-        emailPlace: 'Enter the valid Email'
-      })
-      this.refs.email.shake(400);
+      this.setState({emailPlace: 'Enter the valid Email'})
+      this
+        .refs
+        .email
+        .shake(400);
       return false;
-    }
-    else if (pass == "") {
-      this.setState({
-        passPlace: 'Enter the password'
-      })
-      this.refs.pass.shake(400);
+    } else if (pass == "") {
+      this.setState({passPlace: 'Enter the password'})
+      this
+        .refs
+        .pass
+        .shake(400);
       return false;
     } else {
       return true;
@@ -92,14 +113,14 @@ class authController extends Component {
     if (check) {
       this.setState({
         spinnerOp: 1,
-        btn: !this.state.btn,
+        btn: !this.state.btn
       });
       auth
         .signInWithEmailAndPassword(email, pass)
         .catch(function (error) {
           self.setState({
             spinnerOp: 0,
-            btn: !self.state.btn,
+            btn: !self.state.btn
           });
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -125,14 +146,14 @@ class authController extends Component {
     if (check) {
       this.setState({
         spinnerOp: 1,
-        btn: !this.state.btn,
+        btn: !this.state.btn
       });
       auth
         .createUserWithEmailAndPassword(email, pass)
         .catch(function (error) {
           self.setState({
             spinnerOp: 0,
-            btn: !self.state.btn,
+            btn: !self.state.btn
           });
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -160,7 +181,7 @@ class authController extends Component {
       .signOut()
       .then(function () {
         console.log('signout');
-        Actions.authController();
+        Actions.authController({type: "reset"});
 
       }, function (error) {
         console.log(error)
@@ -169,55 +190,75 @@ class authController extends Component {
   forgotPassword(email) {
     let check = this.validateBox(email);
     if (check) {
-      auth.sendPasswordResetEmail(email).then(function () {
-        alert('Password reset E-mail send to your Email address')
-      }, function (error) {
-        alert(error)
-      });
+      auth
+        .sendPasswordResetEmail(email)
+        .then(function () {
+          alert('Password reset E-mail send to your Email address')
+        }, function (error) {
+          alert(error)
+        });
     }
   }
 
   render() {
     return <View
       style={[
-        {
-          opacity: this.state.login
-        },
-        styles.loginContainer
-      ]}>
+      {
+        opacity: this.state.login
+      },
+      styles.loginContainer
+    ]}>
       <Text style={styles.loginHeading}>Sign in</Text>
       <Animatable.View ref="email">
-        <InputGroup style={styles.loginInput} >
-          <Icon name='ios-mail-outline' style={styles.loginIconColor} />
+        <InputGroup style={styles.loginInput}>
+          <Icon name='ios-mail-outline' style={styles.loginIconColor}/>
           <Input
-            onChangeText={(userText) => this.setState({ userText })}
+            onChangeText={(userText) => this.setState({userText})}
             value={this.state.Text}
             placeholder={this.state.emailPlace}
-            keyboardType={'email-address'} />
+            keyboardType={'email-address'}/>
         </InputGroup>
       </Animatable.View>
       <Animatable.View ref="pass">
         <InputGroup style={styles.loginInput}>
-          <Icon name='ios-lock-outline' style={styles.loginIconColor} />
+          <Icon name='ios-lock-outline' style={styles.loginIconColor}/>
           <Input
-            onChangeText={(userPass) => this.setState({ userPass })}
+            onChangeText={(userPass) => this.setState({userPass})}
             value={this.state.userPass}
             placeholder={this.state.passPlace}
-            secureTextEntry={true} />
+            secureTextEntry={true}/>
         </InputGroup>
       </Animatable.View>
-      <Button style={[styles.loginButton]} onPress={this
+      <Button
+        style={[styles.loginButton]}
+        onPress={this
         .Login
-        .bind(this)} disabled={this.state.btn}>Sign in</Button>
-      <Spinner size={'small'} style={{ opacity: this.state.spinnerOp }} color='#fff' />
+        .bind(this)}
+        disabled={this.state.btn}>Sign in</Button>
+      <Spinner
+        size={'small'}
+        style={{
+        opacity: this.state.spinnerOp
+      }}
+        color='#fff'/>
 
-      <TouchableOpacity style={styles.marTop20} onPress={this.forgotPassword.bind(this, this.state.userText)}>
+      <TouchableOpacity
+        style={styles.marTop20}
+        onPress={this
+        .forgotPassword
+        .bind(this, this.state.userText)}>
         <Text style={styles.colorWhite}>Forgot Passowrd?</Text>
       </TouchableOpacity>
-      <View style={{ flex: 0, flexDirection: 'row', marginTop: 10 }}>
+      <View
+        style={{
+        flex: 0,
+        flexDirection: 'row',
+        marginTop: 10
+      }}>
         <Text style={[styles.colorWhite, styles.font20]}>Don't have an account?</Text>
         <TouchableOpacity onPress={Actions.signup}>
-          <Text style={[styles.colorOrg, styles.font20]} > Sign up</Text>
+          <Text style={[styles.colorOrg, styles.font20]}>
+            Sign up</Text>
         </TouchableOpacity>
       </View>
     </View>

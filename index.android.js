@@ -9,15 +9,14 @@ import {
 } from 'react-native';
 
 import { Scene, Router, Actions } from 'react-native-router-flux';
-
 import { database, auth } from './lib/firebase';
-
 import styles from './views/styles.js';
-import login from './views/login';
+
+import authController from './views/authController';
 import signup from './views/signup';
 import Home from './views/home';
+import ProfileCreate from './views/profile';
 
-const token = null;
 
 export default class thedal extends Component {
   constructor(props) {
@@ -27,32 +26,29 @@ export default class thedal extends Component {
     }
   }
   componentDidMount() {
-    let self = this;
+   /* let self = this;
     auth.onAuthStateChanged(function (user) {
       if (user) {
         Actions.home({ type: "reset" });
       } else {
         self.setState({ view: 1 })
-        Actions.login({ type: "reset" });
+        Actions.authController({ type: "reset" });
       }
-    });
+    });*/
   }
   render() {
-    return <Router sceneStyle={{
-      backgroundColor: '#2d324f',
-    }}
-    >
+    return <Router >
       <Scene key="root" styles={{
         opacity: this.state.view,
-        backgroundColor: '#2d324f',
       }}>
         <Scene
-          key="login"
-          component={login}
-          title="login"
+          key="authController"
+          component={authController}
+          title="authController"
           hideNavBar={true}
           initial={true} />
         <Scene key="signup" component={signup} title="signup" hideNavBar={true} />
+        <Scene key="ProfileCreate" component={ProfileCreate} title="ProfileCreate" hideNavBar={true} />
         <Scene key="home" component={Home} title="Home" hideNavBar={true} />
       </Scene>
     </Router>

@@ -1,4 +1,4 @@
-package com.thedal;
+package com.thedal.thedal;
 
 import com.facebook.react.ReactActivity;
 import com.oblador.vectoricons.VectorIconsPackage;

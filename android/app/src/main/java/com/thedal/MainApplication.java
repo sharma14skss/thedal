@@ -1,4 +1,4 @@
-package com.thedal;
+package com.thedal.thedal;
 
 import android.app.Application;
 import android.util.Log;
