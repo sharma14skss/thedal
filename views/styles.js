@@ -1,7 +1,7 @@
 // all styles for app
 
-import {StyleSheet} from 'react-native';
-
+import {StyleSheet,Dimensions} from 'react-native';
+var {height, width} = Dimensions.get('window');
 const styles = StyleSheet.create({
   loginContainer:{
     flex:1,
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     fontSize:20,
   },
   loginInput:{
-    width:300,
+    width:width-50,
     height:40,
     alignItems: 'center',
     backgroundColor:'#fff'
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     paddingLeft:5
   },
   loginButton:{
-    width:300,
+    width:width-50,
     alignSelf: 'auto',
     marginTop:10,
     backgroundColor:'#f15243',

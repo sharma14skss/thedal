@@ -37,7 +37,7 @@ class ProfileCreate extends Component {
             displayName: "Sharma Sk",
             photoURL: "https://example.com/jane-q-user/profile.jpg"
         }).then(function () {
-            updateUser(user);
+            //updateUser(user);
         }, function (error) {
             // An error happened.
         });
