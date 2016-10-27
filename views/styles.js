@@ -37,6 +37,9 @@ const styles = StyleSheet.create({
   marTop20:{
     marginTop:20,
   },
+  marTop10:{
+    marginTop:10,
+  },
   colorOrg:{
     color:'#f15243'
   },
