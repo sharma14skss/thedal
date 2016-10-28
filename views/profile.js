@@ -17,16 +17,28 @@ import {
     Icon,
     Button,
     Spinner,
-    Thumbnail
+    Thumbnail,
+    CheckBox,
+    Radio
 } from 'native-base';
 import * as Animatable from 'react-native-animatable';
+import DatePicker from 'react-native-datepicker'
+
 import {database, auth} from '../lib/firebase';
 import styles from './styles.js';
 import {updateUser} from './db';
 
 class ProfileCreate extends Component {
+    constructor() {
+        super()
+        this.state = {
+            seletedRadio: 'Female',
+            date:''
+        }
+    }
 
     componentDidMount() {
+       
         /* var user = auth.currentUser;
         user.updateProfile({
             displayName: "Sharma Sk",
@@ -38,6 +50,9 @@ class ProfileCreate extends Component {
         });*/
 
     }
+    radioChange(opt) {
+        this.setState({seletedRadio: opt})
+    }
 
     render() {
         return <View style={styles.loginContainer}>
@@ -45,35 +60,71 @@ class ProfileCreate extends Component {
                 size={120}
                 style={{
                 borderWidth: 3,
-                borderColor: '#f15243',
+                borderColor: '#f15243'
             }}
                 source={require('../img/pro.jpg')}/>
-             <Animatable.View ref="email">
-                <InputGroup style={[styles.loginInput,styles.marTop10]}>
-                <Icon name='ios-mail-outline' style={styles.loginIconColor} />
-                <Input placeholder={'name'} />
+
+            <Animatable.View ref="email">
+                <InputGroup style={[styles.loginInput, styles.marTop10]}>
+                    <Input placeholder={'Display Name'}/>
                 </InputGroup>
             </Animatable.View>
             <Animatable.View ref="email">
-                <InputGroup style={[styles.loginInput,styles.marTop10]}>
-                <Icon name='ios-mail-outline' style={styles.loginIconColor} />
-                <Input placeholder={'name'} />
+                <InputGroup style={[styles.loginInput, styles.marTop10]}>
+                    <Input placeholder={'Frist Name'}/>
                 </InputGroup>
             </Animatable.View>
             <Animatable.View ref="email">
-                <InputGroup style={[styles.loginInput,styles.marTop10]}>
-                <Icon name='ios-mail-outline' style={styles.loginIconColor} />
-                <Input placeholder={'name'} />
+                <InputGroup style={[styles.loginInput, styles.marTop10]}>
+                    <Input placeholder={'Last Name'}/>
                 </InputGroup>
             </Animatable.View>
+            <View style={[styles.gender, styles.marTop10]}>
+
+                <Radio
+                    selected={this.state.seletedRadio === 'Female'}
+                    onPress={this
+                    .radioChange
+                    .bind(this, 'Female')}/>
+                <Text style={[styles.colorWhite, styles.pad20]}>Female</Text>
+
+                <Radio
+                    selected={this.state.seletedRadio === 'Male'}
+                    onPress={this
+                    .radioChange
+                    .bind(this, 'Male')}/>
+                <Text style={[styles.colorWhite, styles.pad20]}>Male
+                </Text>
+
+                <Radio
+                    selected={this.state.seletedRadio === 'Other'}
+                    onPress={this
+                    .radioChange
+                    .bind(this, 'Other')}/>
+                <Text style={[styles.colorWhite, styles.pad20]}>Other
+                </Text>
+
+            </View>
+            <DatePicker
+                style={styles.dob}
+                date={this.state.date}
+                mode="date"
+                placeholder="Select Date of Birth"
+                format="DD-MM-YYYY"
+                maxDate="2016-06-01"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                showIcon={false}
+                onDateChange={(date) => {
+                this.setState({date: date})
+            }}/>
+
             <Animatable.View ref="email">
-                <InputGroup style={[styles.loginInput,styles.marTop10]}>
-                <Icon name='ios-mail-outline' style={styles.loginIconColor} />
-                <Input placeholder={'name'} />
+                <InputGroup style={[styles.loginInput, styles.marTop10]}>
+                    <Input placeholder={'name'}/>
                 </InputGroup>
             </Animatable.View>
-            <Button
-        style={[styles.loginButton]} >Save</Button>
+            <Button style={[styles.loginButton]}>Save</Button>
         </View>
     }
 }
