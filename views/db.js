@@ -1,6 +1,6 @@
 //all database function
 import {AsyncStorage} from 'react-native';
-import {database, stroge} from '../lib/firebase';
+import {auth,database, stroge} from '../lib/firebase';
 
 //save user
 const saveUser = (user) => {
@@ -21,23 +21,31 @@ const saveUser = (user) => {
     AsyncStorage.setItem('UserId', user.uid);
 }
 //upload user profile pic
-const uploadPic = (auth, name, uri) => {
-    let userRef = stroge.ref('users/' + auth + '/profile/' + name);
+const uploadPic = (id, name, uri,details) => {
+
+    let userRef = stroge.ref('users/' + id + '/profile/' + name);
     let uploadTask = userRef.put(uri);
     uploadTask.on('state_changed', function (snapshot) {
         console.log(snapshot.bytesTransferred)
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
+        console.log('Upload is ' + progress + '% done');;
     }, function (error) {
         console.log(error)
     }, function () {
         var downloadURL = uploadTask.snapshot.downloadURL;
-        return downloadURL;
+        let user = auth.currentUser;
+        user
+            .updateProfile({photoURL: downloadURL})
+            .then(function () {
+                updateUser(user,details);
+            }, function (error) {
+                // An error happened.
+            });
     });
 }
 
 //update user
-const updateUser = (user) => {
+const updateUser = (user, details) => {
     let userRef = database.ref('users/' + user.uid);
     userRef.update({
         username: user.email,
@@ -45,7 +53,11 @@ const updateUser = (user) => {
         name: user.displayName,
         photoUrl: user.photoURL,
         verified: user.emailVerified,
-        isProfile: 'Y'
+        isProfile: 'N',
+        firstname: details.firstname,
+        lastname: details.lastname,
+        DOB: details.dob,
+        about: details.about
     });
 }
 

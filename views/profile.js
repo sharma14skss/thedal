@@ -30,45 +30,38 @@ import RNFetchBlob from 'react-native-fetch-blob';
 
 import {database, auth} from '../lib/firebase';
 import styles from './styles.js';
-import {updateUser,uploadPic} from './db';
+import {updateUser, uploadPic} from './db';
 
 const polyfill = RNFetchBlob.polyfill
 
 window.XMLHttpRequest = polyfill.XMLHttpRequest
 window.Blob = polyfill.Blob
 
-
 class ProfileCreate extends Component {
     constructor() {
         super()
         this.state = {
-            seletedRadio: 'Female',
+            displayName: 'sharma',
+            firstName: 'sharma',
+            lastName: 'sk',
+            seletedRadio: 'Male',
             UserDob: '',
+            aboutUser: 'nothing',
             avatarSource: require('../img/pro.jpg'),
+            path: '',
+            type: ''
         }
         let self = this;
     }
 
-    componentDidMount() {
-        this.getDate();
-        /* var user = auth.currentUser;
-        user.updateProfile({
-            displayName: "Sharma Sk",
-            photoURL: "https://example.com/jane-q-user/profile.jpg"
-        }).then(function () {
-            //updateUser(user);
-        }, function (error) {
-            // An error happened.
-        });*/
+    componentDidMount() {}
 
-    }
-    
     imagePick() {
         var options = {
             title: 'Select Avatar',
-            quality:0.5
+            quality: 0.5
         }
-        
+
         ImagePicker.showImagePicker(options, (response) => {
             console.log('Response = ', response);
 
@@ -99,23 +92,38 @@ class ProfileCreate extends Component {
                         isStatic: true
                     };
                 }
-
+                this.state.path = response.path;
+                this.state.type = response.type;
                 this.setState({avatarSource: source});
-                Blob.build(RNFetchBlob.wrap(response.path), { type : response.type })
-                .then((blob) => {
-                    var user = auth.currentUser
-                    console.log(blob)
-                     uploadPic(user.uid,response.fileName,blob);
-                })
 
-
-
-               
             }
         });
     }
-    upload(){
-        
+    updateUser() {
+        let user = auth.currentUser;
+        let imagePath;
+        let details = {
+            firstname: this.state.firstName,
+            lastname: this.state.lastName,
+            dob: this.state.UserDob,
+            about: this.state.aboutUser
+        }
+        if (this.state.path != '') {
+            Blob.build(RNFetchBlob.wrap(this.state.path), {type: this.state.type}).then((blob) => {
+                console.log(blob)
+                imagePath = uploadPic(user.uid, user.uid, blob,details);
+                console.log(imagePath);
+            })
+        }
+
+        user
+            .updateProfile({displayName: this.state.displayName, photoURL: imagePath})
+            .then(function () {
+                updateUser(user, details);
+            }, function (error) {
+                // An error happened.
+            });
+
     }
 
     radioChange(opt) {
@@ -146,17 +154,26 @@ class ProfileCreate extends Component {
 
             <Animatable.View ref="email">
                 <InputGroup style={[styles.loginInput, styles.marTop10]}>
-                    <Input placeholder={'Display Name'}/>
+                    <Input
+                        placeholder={'Display Name'}
+                        onChangeText={(displayName) => this.setState({displayName})}
+                        value={this.state.displayName}/>
                 </InputGroup>
             </Animatable.View>
             <Animatable.View ref="email">
                 <InputGroup style={[styles.loginInput, styles.marTop10]}>
-                    <Input placeholder={'Frist Name'}/>
+                    <Input
+                        placeholder={'Frist Name'}
+                        onChangeText={(firstName) => this.setState({firstName})}
+                        value={this.state.firstName}/>
                 </InputGroup>
             </Animatable.View>
             <Animatable.View ref="email">
                 <InputGroup style={[styles.loginInput, styles.marTop10]}>
-                    <Input placeholder={'Last Name'}/>
+                    <Input
+                        placeholder={'Last Name'}
+                        onChangeText={(lastName) => this.setState({lastName})}
+                        value={this.state.lastName}/>
                 </InputGroup>
             </Animatable.View>
             <View style={[styles.gender, styles.marTop10]}>
@@ -213,10 +230,16 @@ class ProfileCreate extends Component {
                         height: 80
                     }}
                         multiline={true}
-                        maxLength={40}/>
+                        maxLength={40}
+                        onChangeText={(aboutUser) => this.setState({aboutUser})}
+                        value={this.state.aboutUser}/>
                 </InputGroup>
             </Animatable.View>
-            <Button style={[styles.loginButton]}>Save</Button>
+            <Button
+                style={[styles.loginButton]}
+                onPress={this
+                .updateUser
+                .bind(this)}>Save</Button>
         </View>
     }
 }
