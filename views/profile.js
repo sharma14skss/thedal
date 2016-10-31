@@ -7,7 +7,8 @@ import {
     Text,
     View,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
 } from 'react-native';
 
 import {Scene, Router, Actions} from 'react-native-router-flux';
@@ -36,7 +37,7 @@ const polyfill = RNFetchBlob.polyfill
 
 window.XMLHttpRequest = polyfill.XMLHttpRequest
 window.Blob = polyfill.Blob
-
+var {height, width} = Dimensions.get('window');
 class ProfileCreate extends Component {
     constructor() {
         super()
@@ -49,12 +50,15 @@ class ProfileCreate extends Component {
             aboutUser: 'nothing',
             avatarSource: require('../img/pro.jpg'),
             path: '',
-            type: ''
+            type: '',
+            thumbSize:width-220,
         }
         let self = this;
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        console.log(this.state.thumbSize)
+    }
 
     imagePick() {
         var options = {
@@ -142,9 +146,10 @@ class ProfileCreate extends Component {
             <TouchableOpacity
                 onPress={this
                 .imagePick
-                .bind(this)}>
+                .bind(this)}
+                style={styles.marTop10}>
                 <Thumbnail
-                    size={120}
+                    size={this.state.thumbSize}
                     style={{
                     borderWidth: 3,
                     borderColor: '#f15243'
@@ -227,7 +232,7 @@ class ProfileCreate extends Component {
                     <Input
                         placeholder={'Somethings About You'}
                         style={{
-                        height: 80
+                        height: 70
                     }}
                         multiline={true}
                         maxLength={40}
@@ -236,7 +241,7 @@ class ProfileCreate extends Component {
                 </InputGroup>
             </Animatable.View>
             <Button
-                style={[styles.loginButton]}
+                style={[styles.loginButton,{marginBottom:20}]}
                 onPress={this
                 .updateUser
                 .bind(this)}>Save</Button>

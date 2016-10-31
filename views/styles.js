@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     width: width - 50,
     alignSelf: 'auto',
     marginTop: 10,
-    backgroundColor: '#f15243'
+    backgroundColor: '#f15243',
   },
   gender: {
     flex: 0,
