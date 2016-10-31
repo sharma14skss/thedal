@@ -138,7 +138,7 @@ class ProfileCreate extends Component {
     }
 
     render() {
-        return <View style={styles.loginContainer}>
+        return <ScrollView><View style={styles.loginContainer}>
             <TouchableOpacity
                 onPress={this
                 .imagePick
@@ -241,6 +241,7 @@ class ProfileCreate extends Component {
                 .updateUser
                 .bind(this)}>Save</Button>
         </View>
+        </ScrollView>
     }
 }
 
