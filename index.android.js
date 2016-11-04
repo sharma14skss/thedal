@@ -28,10 +28,10 @@ export default class thedal extends Component {
           component={authController}
           title="authController"
           hideNavBar={true}
-          initial={true} />
+          />
         <Scene key="signup" component={signup} title="signup" hideNavBar={true} />
         <Scene key="ProfileCreate" component={ProfileCreate} title="ProfileCreate" hideNavBar={true} />
-        <Scene key="home" component={Home} title="Home" hideNavBar={true} />
+        <Scene key="home" component={Home} title="Home" hideNavBar={true}  initial={true}/>
       </Scene>
     </Router>
   }

@@ -60,12 +60,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 10,
+    backgroundColor:'#2d324f'
+
   },
   tabs: {
-    height: 45,
+    height: 65,
     flexDirection: 'row',
-    paddingTop: 5,
     borderWidth: 1,
     borderTopWidth: 0,
     borderLeftWidth: 0,

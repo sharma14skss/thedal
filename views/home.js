@@ -24,7 +24,7 @@ class Signout extends authController {
 class Home extends Component{
   render() {
     return <ScrollableTabView
-      style={{marginTop: 20, }}
+      
       initialPage={0}
       renderTabBar={() => <TabBar />}
       >
@@ -66,21 +66,153 @@ class Home extends Component{
       <ScrollView tabLabel="ios-people" style={styles.tabView}>
         <View style={styles.card}>
           <Text>Friends</Text>
+          <Container>
+                <Content>
+                    <Card>
+                        <CardItem>                       
+                            <Thumbnail source={require('../img/pro.jpg')} />
+                            <Text>User name</Text>
+                            <Text note>April 15, 2016</Text>
+                        </CardItem>
+
+                        <CardItem cardBody> 
+                            <Image style={{ resizeMode: 'cover' }} source={require('../img/big.png')} /> 
+                            <Text>
+                                This is some text about this pic 
+                                some intersting setence about this pic like this pic is
+                                very beautiful something like that..
+                            </Text>
+                            
+                        </CardItem>
+                        <CardItem footer>
+                          <Button transparent textStyle={{color: '#87838B'}}>
+                                12 likes
+                            </Button>
+                            <Button transparent textStyle={{color: '#87838B'}}>
+                                15 comments
+                            </Button>
+                            <Button transparent textStyle={{color: '#87838B'}}>
+                                10 share
+                            </Button>
+                            </CardItem>
+                   </Card>
+                   
+                </Content>
+            </Container>
         </View>
       </ScrollView>
       <ScrollView tabLabel="ios-chatboxes" style={styles.tabView}>
         <View style={styles.card}>
           <Text>Messenger</Text>
+          <Container>
+                <Content>
+                    <Card>
+                        <CardItem>                       
+                            <Thumbnail source={require('../img/pro.jpg')} />
+                            <Text>User name</Text>
+                            <Text note>April 15, 2016</Text>
+                        </CardItem>
+
+                        <CardItem cardBody> 
+                            <Image style={{ resizeMode: 'cover' }} source={require('../img/big.png')} /> 
+                            <Text>
+                                This is some text about this pic 
+                                some intersting setence about this pic like this pic is
+                                very beautiful something like that..
+                            </Text>
+                            
+                        </CardItem>
+                        <CardItem footer>
+                          <Button transparent textStyle={{color: '#87838B'}}>
+                                12 likes
+                            </Button>
+                            <Button transparent textStyle={{color: '#87838B'}}>
+                                15 comments
+                            </Button>
+                            <Button transparent textStyle={{color: '#87838B'}}>
+                                10 share
+                            </Button>
+                            </CardItem>
+                   </Card>
+                   
+                </Content>
+            </Container>
         </View>
       </ScrollView>
       <ScrollView tabLabel="ios-notifications" style={styles.tabView}>
         <View style={styles.card}>
           <Text>Notifications</Text>
+          <Container>
+                <Content>
+                    <Card>
+                        <CardItem>                       
+                            <Thumbnail source={require('../img/pro.jpg')} />
+                            <Text>User name</Text>
+                            <Text note>April 15, 2016</Text>
+                        </CardItem>
+
+                        <CardItem cardBody> 
+                            <Image style={{ resizeMode: 'cover' }} source={require('../img/big.png')} /> 
+                            <Text>
+                                This is some text about this pic 
+                                some intersting setence about this pic like this pic is
+                                very beautiful something like that..
+                            </Text>
+                            
+                        </CardItem>
+                        <CardItem footer>
+                          <Button transparent textStyle={{color: '#87838B'}}>
+                                12 likes
+                            </Button>
+                            <Button transparent textStyle={{color: '#87838B'}}>
+                                15 comments
+                            </Button>
+                            <Button transparent textStyle={{color: '#87838B'}}>
+                                10 share
+                            </Button>
+                            </CardItem>
+                   </Card>
+                   
+                </Content>
+            </Container>
         </View>
       </ScrollView>
       <ScrollView tabLabel="ios-list" style={styles.tabView}>
         <View style={styles.card}>
           <Signout/>
+          <Container>
+                <Content>
+                    <Card>
+                        <CardItem>                       
+                            <Thumbnail source={require('../img/pro.jpg')} />
+                            <Text>User name</Text>
+                            <Text note>April 15, 2016</Text>
+                        </CardItem>
+
+                        <CardItem cardBody> 
+                            <Image style={{ resizeMode: 'cover' }} source={require('../img/big.png')} /> 
+                            <Text>
+                                This is some text about this pic 
+                                some intersting setence about this pic like this pic is
+                                very beautiful something like that..
+                            </Text>
+                            
+                        </CardItem>
+                        <CardItem footer>
+                          <Button transparent textStyle={{color: '#87838B'}}>
+                                12 likes
+                            </Button>
+                            <Button transparent textStyle={{color: '#87838B'}}>
+                                15 comments
+                            </Button>
+                            <Button transparent textStyle={{color: '#87838B'}}>
+                                10 share
+                            </Button>
+                            </CardItem>
+                   </Card>
+                   
+                </Content>
+            </Container>
         </View>
       </ScrollView>
     </ScrollableTabView>;
