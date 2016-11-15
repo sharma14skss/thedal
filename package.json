@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start": "react-native start",
     "test": "jest"
   },
   "dependencies": {
@@ -11,6 +11,7 @@
     "native-base": "^0.5.11",
     "react": "15.3.2",
     "react-native": "^0.36.0",
+    "react-native-navigation": "2.0.0-experimental.116",
     "react-native-animatable": "^0.6.1",
     "react-native-datepicker": "^1.3.2",
     "react-native-fetch-blob": "^0.9.6",
