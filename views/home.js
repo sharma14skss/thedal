@@ -215,7 +215,7 @@ class Home extends Component{
             </Container>
         </View>
       </ScrollView>
-    </ScrollableTabView>;
+    </ScrollableTabView>
   }
 } 
 

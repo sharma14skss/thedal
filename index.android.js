@@ -5,36 +5,55 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  TouchableOpacity
 } from 'react-native';
 
-import { Scene, Router, Actions } from 'react-native-router-flux';
+import { Navigation } from 'react-native-navigation';
+
+
 import { database, auth } from './lib/firebase';
 import styles from './views/styles.js';
 
-import authController from './views/authController';
-import signup from './views/signup';
-import Home from './views/home';
-import ProfileCreate from './views/profile';
+//import authController from './views/authController';
+//import signup from './views/signup';
+//import Home from './views/home';
+//import ProfileCreate from './views/profile';
 
-
-export default class thedal extends Component {
-
+class thedal extends Component {
+  prss(){
+    this.props.navigator.push({
+      screen: 'home',
+      title: 'Pushed Screen'
+    });
+  }
   render() {
-    return <Router >
-      <Scene key="root">
-        <Scene
-          key="authController"
-          component={authController}
-          title="authController"
-          hideNavBar={true}
-          />
-        <Scene key="signup" component={signup} title="signup" hideNavBar={true} />
-        <Scene key="ProfileCreate" component={ProfileCreate} title="ProfileCreate" hideNavBar={true} />
-        <Scene key="home" component={Home} title="Home" hideNavBar={true}  initial={true}/>
-      </Scene>
-    </Router>
+    return <View>
+    <TouchableOpacity onPress={this.prss.bind(this)}>
+      <Text>sss</Text>
+      </TouchableOpacity>
+    </View>
+  }
+};
+class Home extends Component {
+  
+  render() {
+    return <View>
+   
+      <Text>sss</Text>
+
+    </View>
   }
 };
 
-AppRegistry.registerComponent('thedal', () => thedal);
+//AppRegistry.registerComponent('thedal', () => thedal);
+Navigation.registerComponent('home', () => Home);
+Navigation.registerComponent('thedal', () => thedal);
+
+Navigation.startSingleScreenApp({
+  screen: {
+    screen: 'thedal', // unique ID registered with Navigation.registerScreen
+    title: 'Welcome', // title of the screen as appears in the nav bar (optional)
+    navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+    navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+  },
+});
